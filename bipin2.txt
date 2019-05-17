@@ -1,0 +1,1015 @@
+https://github.com/Subbu-B/DevOpsClassCodes-master
+
+
+root@tcs1:~/gitex# vi file1
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git init
+Initialized empty Git repository in /root/gitex/.git/
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# ls -la
+total 16
+drwxr-xr-x 3 root root 4096 May 13 07:28 .
+drwx------ 4 root root 4096 May 13 07:28 ..
+-rw-r--r-- 1 root root   19 May 13 07:28 file1
+drwxr-xr-x 7 root root 4096 May 13 07:28 .git
+root@tcs1:~/gitex# git status
+On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        file1
+
+nothing added to commit but untracked files present (use "git add" to track)
+root@tcs1:~/gitex# git add file1 
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+        new file:   file1
+
+root@tcs1:~/gitex# 
+
+root@tcs1:~/gitex# git commit -m "first commit"
+[master (root-commit) d85dba5] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+nothing to commit, working directory clean
+root@tcs1:~/gitex# 
+
+root@tcs1:~/gitex# git log
+commit d85dba527a2b3b0574dc5ee170fe624ae3540c4d
+Author: bipin89 <bipin89@gmail.com>
+Date:   Mon May 13 07:31:03 2019 +0000
+
+    first commit
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git log --oneline
+d85dba5 first commit
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# 
+
+root@tcs1:~/gitex# touch file2 file3 file4 file5
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        file2
+        file3
+        file4
+        file5
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+root@tcs1:~/gitex# git add .
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   file2
+        new file:   file3
+        new file:   file4
+        new file:   file5
+
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# vi file1
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   file2
+        new file:   file3
+        new file:   file4
+        new file:   file5
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   file1
+
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git commit -a -m "Second commit added a new line in file1"
+[master 2a0be5c] Second commit added a new line in file1
+ 5 files changed, 1 insertion(+)
+ create mode 100644 file2
+ create mode 100644 file3
+ create mode 100644 file4
+ create mode 100644 file5
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git status
+On branch master
+nothing to commit, working directory clean
+root@tcs1:~/gitex# 
+root@tcs1:~/gitex# git log --oneline
+2a0be5c Second commit added a new line in file1
+d85dba5 first commit
+root@tcs1:~/gitex# 
+
+
+Jenkins:
+
+sudo apt-get install default-jdk 
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install -y jenkins
+systemctl status jenkins
+
+netstat -anp | grep 8080
+netstat -plntu
+
+
+
+https://github.com/Subbu-B/DevOpsClassCodes-master.git
+
+
+ssh-keygen -t rsa
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+echo 'deb https://pkg.jenkins.io/debian binary/' >> /etc/apt/sources.list
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+
+iptables -A INPUT -i ens4 -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -i ens4 -p tcp --dport 8080 -j ACCEPT
+iptables -A PREROUTING -t nat -i ens4 -p tcp --dport 80 -j REDIRECT --to-port 8080
+
+
+--Deploy job
+
+rm -rf app
+mkdir app
+cd app
+
+cp /var/lib/jenkins/workspace/package-run/target/address.war .
+
+cat << 'EOF' > Dockerfile
+FROM tomcat
+ADD addressbook.war /usr/local/tomcat/webapps
+CMD "catalina.sh" "run"
+EOF
+
+sudo docker build . -t bipin90/tcsapp:$BUILD_NUMBER
+sudo sockker push bipin90/tcsapp:$BUILD_NUMBER
+sudo docker run -itd --name "Addressbook-$BUILD_NUMBER" -p 80:8080 bipin90/tcsapp:$BUILD_NUMBER
+
+---------------------------------------------------------------------
+
+Docker Swarm:
+
+root@tcs1:~/docker# docker swarm init --advertise-addr 10.160.0.16
+Swarm initialized: current node (lvqsarbehxgi2jkc9377krl17) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-27hmz7xgmqywmk7o58ka2c3faezcp4lka8h9hgyff9dy783o87-5c9pzj6beicmc2esnk1jfuteu 10.160.0.16:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+root@tcs1:~/docker# 
+
+root@tcs1:~/docker# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+lvqsarbehxgi2jkc9377krl17 *   tcs1                Ready               Active              Leader              18.09.6
+root@tcs1:~/docker# 
+
+join the slaves -
+
+root@jenkins-slave1:~# docker swarm join --token SWMTKN-1-27hmz7xgmqywmk7o58ka2c3faezcp4lka8h9hgyff9dy783o87-5c9pzj6beicmc2esnk1jfuteu 10.160.0.16:2377
+This node joined a swarm as a worker.
+root@jenkins-slave1:~# 
+root@jenkins-slave1:~# 
+
+root@jenkins-slave2:~# docker swarm join --token SWMTKN-1-27hmz7xgmqywmk7o58ka2c3faezcp4lka8h9hgyff9dy783o87-5c9pzj6beicmc2esnk1jfuteu 10.160.0.16:2377
+This node joined a swarm as a worker.
+root@jenkins-slave2:~# 
+root@jenkins-slave2:~# 
+
+root@tcs1:~/docker# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+fhf7kn7nmqw0j4xehgnft0suf     jenkins-slave1      Ready               Active                                  18.09.6
+ps6b3whdy8kj7wgdbnudd04lj     jenkins-slave2      Ready               Active                                  18.09.6
+lvqsarbehxgi2jkc9377krl17 *   tcs1                Ready               Active              Leader              18.09.6
+root@tcs1:~/docker# 
+root@tcs1:~/docker# 
+
+
+root@tcs1:~/docker# docker service create --name webservice -p 80:80 nginx
+n0wpzupgyrjjhd24goms83i53
+overall progress: 1 out of 1 tasks 
+1/1: running   
+verify: Service converged 
+root@tcs1:~/docker# 
+root@tcs1:~/docker# 
+root@tcs1:~/docker# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+n0wpzupgyrjj        webservice          replicated          1/1                 nginx:latest        *:80->80/tcp
+root@tcs1:~/docker# 
+
+root@tcs1:~/docker# docker service ps webservice
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+3o7zednpswk5        webservice.1        nginx:latest        jenkins-slave2      Running             Running 3 minutes ago                       
+root@tcs1:~/docker# 
+root@tcs1:~/docker# 
+
+root@tcs1:~/docker# docker service scale webservice=10
+webservice scaled to 10
+overall progress: 10 out of 10 tasks 
+1/10: running   
+2/10: running   
+3/10: running   
+4/10: running   
+5/10: running   
+6/10: running   
+7/10: running   
+8/10: running   
+9/10: running   
+10/10: running   
+verify: Service converged 
+root@tcs1:~/docker# 
+
+
+root@tcs1:~/docker# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+n0wpzupgyrjj        webservice          replicated          10/10               nginx:latest        *:80->80/tcp
+root@tcs1:~/docker# 
+root@tcs1:~/docker# 
+
+root@tcs1:~/docker# docker service ps webservice
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE                ERROR               PORTS
+3o7zednpswk5        webservice.1        nginx:latest        jenkins-slave2      Running             Running 25 minutes ago                           
+s98pbmgc9auv        webservice.2        nginx:latest        tcs1                Running             Running about a minute ago                       
+vo01j23fr9jz        webservice.3        nginx:latest        tcs1                Running             Running about a minute ago                       
+n2o34o8j30d3        webservice.4        nginx:latest        tcs1                Running             Running about a minute ago                       
+4n6c8vt39941        webservice.5        nginx:latest        jenkins-slave2      Running             Running about a minute ago                       
+dee257heuh1z        webservice.6        nginx:latest        jenkins-slave1      Running             Running about a minute ago                       
+b4lmj4wzycki        webservice.7        nginx:latest        tcs1                Running             Running about a minute ago                       
+v6wf4s882vto        webservice.8        nginx:latest        jenkins-slave2      Running             Running about a minute ago                       
+t7erwlnwfcyx        webservice.9        nginx:latest        jenkins-slave1      Running             Running about a minute ago                       
+6vi9rl54zre2        webservice.10       nginx:latest        jenkins-slave1      Running             Running about a minute ago                       
+root@tcs1:~/docker# 
+
+----------------------------------------------------------
+Kubernetes:
+
+
+
+root@tcs1:~# gcloud init
+Welcome! This command will take you through the configuration of gcloud.
+
+Your current configuration has been set to: [default]
+
+You can skip diagnostics next time by using the following flag:
+  gcloud init --skip-diagnostics
+
+Network diagnostic detects and fixes local network connection issues.
+Checking network connection...done.                                                                                                                                            
+Reachability Check passed.
+Network diagnostic (1/1 checks) passed.
+
+Choose the account you would like to use to perform operations for 
+this configuration:
+ [1] 727679962279-compute@developer.gserviceaccount.com
+ [2] Log in with a new account
+Please enter your numeric choice:  2
+
+
+You are running on a Google Compute Engine virtual machine.
+It is recommended that you use service accounts for authentication.
+
+You can run:
+
+  $ gcloud config set account `ACCOUNT`
+
+to switch accounts if necessary.
+
+Your credentials may be visible to others with access to this
+virtual machine. Are you sure you want to authenticate with
+your personal account?
+
+Do you want to continue (Y/n)?  y
+
+Go to the following link in your browser:
+
+    https://accounts.google.com/o/oauth2/auth?redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&prompt=select_account&response_type=code&client_id=32555940559.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&access_type=offline
+
+Enter verification code: 4/SgGEeHmsZ9CEfVeql9dkZ-8zdE7RQ2rsFDvufTCFHWXB9kXvuQmFaw4
+You are logged in as: [bipin89@gmail.com].
+
+Pick cloud project to use: 
+ [1] endless-bank-234911
+ [2] vm-instances-234911
+ [3] Create a new project
+Please enter numeric choice or text value (must exactly match list 
+item):  1
+
+
+
+---
+
+root@tcs1:~# gcloud compute instances list
+NAME            ZONE           MACHINE_TYPE               PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+docker          asia-south1-c  n1-standard-1                           10.160.0.11                  TERMINATED
+docker-1        asia-south1-c  n1-standard-2                           10.160.0.19  35.200.146.117  RUNNING
+jenkins-slave1  asia-south1-c  n1-standard-1                           10.160.0.17  35.200.161.92   RUNNING
+jenkins-slave2  asia-south1-c  n1-standard-1                           10.160.0.18  35.244.61.171   RUNNING
+tcs1            asia-south1-c  custom (2 vCPU, 4.00 GiB)               10.160.0.16  35.244.13.148   RUNNING
+root@tcs1:~# 
+
+---
+root@tcs1:~# gcloud container clusters create k8s-cluster --zone=asia-south1-c
+WARNING: Accessing a Kubernetes Engine cluster requires the kubernetes commandline
+client [kubectl]. To install, run
+  $ gcloud components install kubectl
+
+WARNING: Starting in 1.12, new clusters will have basic authentication disabled by default. Basic authentication can be enabled (or disabled) manually using the `--[no-]enable-basic-auth` flag.
+WARNING: Starting in 1.12, new clusters will not have a client certificate issued. You can manually enable (or disable) the issuance of the client certificate using the `--[no-]issue-client-certificate` flag.
+WARNING: Currently VPC-native is not the default mode during cluster creation. In the future, this will become the default mode and can be disabled using `--no-enable-ip-alias` flag. Use `--[no-]enable-ip-alias` flag to suppress this warning.
+This will enable the autorepair feature for nodes. Please see
+https://cloud.google.com/kubernetes-engine/docs/node-auto-repair for more
+information on node autorepairs.
+
+WARNING: Starting in Kubernetes v1.10, new clusters will no longer get compute-rw and storage-ro scopes added to what is specified in --scopes (though the latter will remain included in the default --scopes). To use these scopes, add them explicitly to --scopes. To use the new behavior, set container/new_scopes_behavior property (gcloud config set container/new_scopes_behavior true).
+Creating cluster k8s-cluster... Cluster is being health-checked (master is healthy)...done.                                                                                    
+Created [https://container.googleapis.com/v1/projects/endless-bank-234911/zones/asia-south1-c/clusters/k8s-cluster].
+To inspect the contents of your cluster, go to: https://console.cloud.google.com/kubernetes/workload_/gcloud/asia-south1-c/k8s-cluster?project=endless-bank-234911
+kubeconfig entry generated for k8s-cluster.
+NAME         LOCATION       MASTER_VERSION  MASTER_IP       MACHINE_TYPE   NODE_VERSION  NUM_NODES  STATUS
+k8s-cluster  asia-south1-c  1.11.8-gke.6    35.200.213.203  n1-standard-1  1.11.8-gke.6  3          RUNNING
+root@tcs1:~# 
+
+------
+
+kubectl
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+
+-------------
+
+
+root@tcs1:~# kubectl get nodes
+NAME                                         STATUS   ROLES    AGE   VERSION
+gke-k8s-cluster-default-pool-150d3795-5bl6   Ready    <none>   20m   v1.11.8-gke.6
+gke-k8s-cluster-default-pool-150d3795-nk22   Ready    <none>   20m   v1.11.8-gke.6
+gke-k8s-cluster-default-pool-150d3795-tkg0   Ready    <none>   20m   v1.11.8-gke.6
+root@tcs1:~# 
+root@tcs1:~# 
+
+-------
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-pod
+  labels:
+    env: prod
+    version: v1
+spec:
+  containers:
+  - name: sample-container
+    image: nginx
+    ports:
+    - containerPort: 80
+
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# kubectl create -f pod.yaml
+pod/sample-pod created
+
+root@tcs1:~/k8s# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+sample-pod   1/1     Running   0          2m
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl describe pods sample-pod
+------------------
+
+
+deployment:
+
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 10
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: sample-container
+        image: nginx
+        ports:
+        - containerPort: 80
+
+
+root@tcs1:~/k8s# kubectl create -f deployment.yaml 
+deployment.extensions/my-deployment created
+
+root@tcs1:~/k8s# kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+my-deployment-64f787bd47-5dz2c   1/1     Running   0          1m
+my-deployment-64f787bd47-65prl   1/1     Running   0          1m
+my-deployment-64f787bd47-7qnkn   1/1     Running   0          1m
+my-deployment-64f787bd47-hh2fh   1/1     Running   0          1m
+my-deployment-64f787bd47-j6j2b   1/1     Running   0          1m
+my-deployment-64f787bd47-kr6ds   1/1     Running   0          1m
+my-deployment-64f787bd47-m9kzr   1/1     Running   0          1m
+my-deployment-64f787bd47-p4gjf   1/1     Running   0          1m
+my-deployment-64f787bd47-rr8sn   1/1     Running   0          1m
+my-deployment-64f787bd47-wrw29   1/1     Running   0          1m
+sample-pod                       1/1     Running   0          16h
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# kubectl get deployment
+NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+my-deployment   10        10        10           10          1m
+
+
+root@tcs1:~/k8s# kubectl describe deployment my-deployment
+
+root@tcs1:~/k8s# kubectl get rs
+NAME                       DESIRED   CURRENT   READY   AGE
+my-deployment-64f787bd47   10        10        10      9m
+root@tcs1:~/k8s# 
+------
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-app
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+
+
+
+
+root@tcs1:~/k8s# kubectl create -f service.yaml 
+service/my-service created
+
+
+root@tcs1:~/k8s# kubectl describe service my-service 
+Name:              my-service
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=my-app
+Type:              ClusterIP
+IP:                10.55.240.209
+Port:              http  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.52.0.11:80,10.52.0.12:80,10.52.0.13:80 + 7 more...
+Session Affinity:  None
+Events:            <none>
+root@tcs1:~/k8s# 
+
+
+root@tcs1:~/k8s# kubectl get service
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.55.240.1     <none>        443/TCP   18h
+my-service   ClusterIP   10.55.240.209   <none>        80/TCP    34m
+
+
+root@tcs1:~/k8s# kubectl get service
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.55.240.1     <none>        443/TCP   18h
+my-service   ClusterIP   10.55.240.209   <none>        80/TCP    34m
+root@tcs1:~/k8s# kubectl delete service my-service
+service "my-service" deleted
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# kubectl get service
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.55.240.1   <none>        443/TCP   18h
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# 
+
+
+----
+
+nodeport:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  labels:
+    service: my-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80					
+    nodePort: 32222                         # k8s has a port range that we can use. external port
+    protocol: TCP
+  selector:
+    app: my-app
+
+root@tcs1:~/k8s# kubectl create -f nodeport.yaml
+service/my-service created
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s# kubectl get service
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.55.240.1    <none>        443/TCP        18h
+my-service   NodePort    10.55.245.17   <none>        80:32222/TCP   42s
+root@tcs1:~/k8s# 
+root@tcs1:~/k8s#
+
+----
+
+loadbalancer
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service-loadbalancer
+  labels:
+    service: my-service-loadbalancer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    nodePort: 31222
+    protocol: TCP
+  selector:
+    app: my-app
+
+root@tcs1:~/k8s# kubectl create -f loadbalancer.yaml
+service/my-service-loadbalancer created
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl get service
+NAME                      TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
+kubernetes                ClusterIP      10.55.240.1    <none>           443/TCP        19h
+my-service                NodePort       10.55.245.17   <none>           80:32222/TCP   37m
+my-service-loadbalancer   LoadBalancer   10.55.250.82   35.200.238.226   80:31222/TCP   2m
+root@tcs1:~/k8s# 
+
+Load balancer created in GCP
+
+---------------
+addressbook-
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: addressbookdeployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: addressbook
+    spec:
+      containers:
+      - name: addressbook-container
+        image: npsoni/maytcs:latest
+        ports:
+        - containerPort: 8080
+
+
+
+root@tcs1:~/k8s# kubectl create -f addressbook.yaml
+deployment.extensions/addressbookdeployment created
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl get deploy
+NAME                    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+addressbookdeployment   2         2         2            0           14m
+my-deployment           10        10        10           10          4h
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl delete deploy addressbookdeployment
+deployment.extensions "addressbookdeployment" deleted
+root@tcs1:~/k8s# 
+
+
+
+service for addressbook
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: addressbook-loadbalancer
+  labels:
+    service: addressbook-loadbalancer
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    nodePort: 31444
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: addressbook
+
+-------------------
+rollout:
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: addressbookdeployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: addressbook
+    spec:
+      containers:
+      - name: addressbook-container
+        image: jenkins
+        ports:
+        - containerPort: 8080
+
+
+root@tcs1:~/k8s# kubectl apply -f addressbook.yaml --record
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+deployment.extensions/addressbookdeployment configured
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl rollout status deployment addressbookdeployment
+Waiting for deployment "addressbookdeployment" rollout to finish: 1 of 2 updated replicas are available...
+deployment "addressbookdeployment" successfully rolled out
+root@tcs1:~/k8s# 
+
+root@tcs1:~/k8s# kubectl get rs
+NAME                               DESIRED   CURRENT   READY   AGE
+addressbookdeployment-5bcf57dfb6   0         0         0       2h
+addressbookdeployment-5fd67646c5   2         2         2       3m
+
+
+
+root@tcs1:~/k8s# kubectl rollout history deployment addressbookdeployment
+deployment.extensions/addressbookdeployment 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         kubectl apply --filename=addressbook.yaml --record=true
+
+root@tcs1:~/k8s# 
+-------------------------------------------------------------------------------------
+
+ANSIBLE:
+
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
+$ sudo apt update
+$ sudo apt install ansible
+
+
+root@docker-1:~/.ssh# ansible --version
+ansible 2.8.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.12 (default, Nov 12 2018, 14:36:49) [GCC 5.4.0 20160609]
+root@docker-1:~/.ssh# 
+------
+
+root@docker-1:~/.ssh# cd /etc/ansible/
+root@docker-1:/etc/ansible# vi hosts
+
+[servers]
+10.160.0.17
+
+[dbservers]
+10.160.0.18
+
+[infra]
+10.160.0.17
+10.160.0.18
+
+
+------------
+
+
+root@docker-1:/etc/ansible# ansible -m ping all
+
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.17 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.17 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.18 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.18 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+root@docker-1:/etc/ansible# 
+
+----------------------------------------
+
+root@docker-1:/etc/ansible# ansible -m ping servers
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.17 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.17 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+root@docker-1:/etc/ansible# 
+
+---------------
+
+root@docker-1:/etc/ansible# ansible -m ping dbservers
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.18 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.18 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+
+---------------
+root@docker-1:/etc/ansible# ansible -m ping infra
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.17 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.17 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+[DEPRECATION WARNING]: Distribution Ubuntu 16.04 on host 10.160.0.18 should use /usr/bin/python3, but is using 
+/usr/bin/python for backward compatibility with prior Ansible releases. A future Ansible release will default to 
+using the discovered platform python for this host. See 
+https://docs.ansible.com/ansible/2.8/reference_appendices/interpreter_discovery.html for more information. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+10.160.0.18 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    }, 
+    "changed": false, 
+    "ping": "pong"
+}
+root@docker-1:/etc/ansible# 
+----------------------------------
+
+run a shell command- 
+root@docker-1:/etc/ansible# ansible -m command -a "apt-get update" all
+
+------
+
+create user:
+
+ansible -m user -a "name=tcs password=password" all
+
+copy files:
+
+oot@docker-1:/tmp# ansible -m copy -a "src=/tmp/ansiblefile dest=/tmp" all
+
+
+root@docker-1:/tmp# ansible -m setup servers
+root@docker-1:/tmp# ansible -m setup servers -a "filter=ansible_user*"
+
+-------------
+Playbook example:
+
+root@docker-1:~/ansible# vi playbook1.yaml
+
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+  - name: copy a file
+    copy: src=/tmp/ansiblefile  dest=/tmp/playbookfile
+  - name: create a user
+    user: name=tcs1 password=password
+
+
+root@docker-1:~/ansible# ansible-playbook playbook1.yaml 
+
+PLAY [all] ********************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************
+ok: [10.160.0.17]
+ok: [10.160.0.18]
+
+TASK [copy a file] ************************************************************************************************
+changed: [10.160.0.18]
+changed: [10.160.0.17]
+
+TASK [create a user] **********************************************************************************************
+ [WARNING]: The input ******** appears not to have been hashed. The '********' argument must be encrypted for this
+module to work properly.
+
+changed: [10.160.0.17]
+changed: [10.160.0.18]
+
+PLAY RECAP ********************************************************************************************************
+10.160.0.17                : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+10.160.0.18                : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+root@docker-1:~/ansible# 
+
+-----------
+syntax check:
+
+root@docker-1:~/ansible# ansible-playbook playbook1.yaml --syntax-check
+
+playbook: playbook1.yaml
+root@docker-1:~/ansible# 
+
+Give dry run - 
+
+root@docker-1:~/ansible# ansible-playbook playbook1.yaml --check
+----------
+
+copy a file and execute shell compads in the file
+
+---
+- hosts: servers
+  become: true
+  gather_facts: false
+  tasks:
+  - name: Copy test.sh file
+    copy: src=/root/ansible/test.sh dest=/tmp/test.sh
+  - name: execute the script
+    command: sh /tmp/test.sh
+
+-----------------
+apt module to install git
+
+---
+- hosts: servers
+  become: true
+  gather_facts: false
+  tasks:
+  - name: use apt module to install git
+    apt: name=git state=present
+
+
+-----------------------
+
+loop:
+
+---
+- hosts: dbservers
+  become: true
+  gather_facts: false
+  tasks:
+  - name: use apt module to install git
+    apt: name={{item}} state=present        
+    with_items:
+    - git
+    - ntp
+    - htop
+
+------------
+
+prepare new server - install apache - copy app file - restart - handlers:
+
+---
+- hosts: dbservers
+  become: true
+  gather_facts: false
+  vars:
+    src_path: /root/ansible/index.html
+    dest_path: /var/www/html
+  tasks:
+  - name: install apache2
+    apt: name=apache2 state=present
+  - name: start and enable the service
+    service: name=apache2 state=started enabled=True
+  - name: Copy index file
+    copy: src={{src_path}} dest={{dest_path}}/index.html
+    notify: restart_apache2
+
+  handlers:
+  - name: restart_apache2
+    service: name=apache2 state=restarted
+
+
+-------------------------------
+
+---
+- hosts: dbservers
+  become: true
+  gather_facts: false
+  vars:
+    src_path: /root/ansible/index.html
+    dest_path: /var/www/html
+  tasks:
+  - name: install apache2
+    apt: name=apache2 state=present
+    when: ansible_distribution=='Ununtu'
+
+  - name: install httpd
+    apt: name=httpd state=present
+    when: ansible_distribution=='CentOS'
+
+  - name: start and enable apache2
+    service: name=apache2 state=started enabled=True
+    when: ansible_distribution=='Ununtu'
+
+  - name: start and enable httpd
+    service: name=httpd state=started enabled=True
+    when: ansible_distribution=='CentOS'
+
+
+  - name: Copy index file
+    copy: src={{src_path}} dest={{dest_path}}/index.html
+    notify: restart_apache2
+
+
+  - name: restart_apache2
+    service: name=apache2 state=restarted
+    when: ansible_distribution=='Ununtu'
+
+  - name: restart_httpd
+    service: name=httpd state=restarted
+    when: ansible_distribution=='CentOS'
+~                                       
+--------------
+
+root@docker-1:~/ansible# 
+
+root@docker-1:~/ansible/roles/apache/tasks# vi main.yaml
+- name: install apache2
+  apt: name=apache2 state=present
+  when: ansible_distribution=='Ununtu'
+
+- name: start and enable apache2
+  service: name=apache2 state=started enabled=True
+  when: ansible_distribution=='Ununtu'
+
+- name: Copy index file
+  copy: src={{src_path}} dest={{dest_path}}/index.html
+  notify: restart_apache2
+
+
+
+                                                                                                                                       
