@@ -1,0 +1,542 @@
+ssh keyword generation
+ssh-keygen
+enter
+enter for password
+
+~/.ssh
+
+version for ls release
+
+install git: 
+
+
+run the git command
+login with git config --global user.name "suganya"
+email git config --global user.email "suganya.gmail.com"
+
+intitalise the git  code:
+git init
+git add to add track in GIT staging
+git add . current directory 
+git add * - all directory 
+
+git commit - git commit -m "title"
+git log 
+git show (first 5 hash)
+
+
+git commit -am "third commit" (file has to be committed before)
+git diff (checked before the commit also )
+
+
+git ls-files (files which are kept in REPO )
+
+ls  means local 
+
+git log --oneline ----> commit id 
+git checkout --file1
+vim .gitignore (enter the files are which have passwords)
+
+
+git tag
+git tag --a v2.0 commit id -m "vommrnyd"(git tag is used to track the praticular commit id )
+
+
+git show (commit id )
+
+git show ( particular created tag name)
+
+
+
+git remote add origin (link)
+
+git push origin master 
+enter the username and password
+
+tree . 
+
+=======================================================================================
+
+ 
+ansible ubuntu node 1
+/etc/ssh/ssh_config
+
+permit rootlogin as yes
+password authenation yes 
+
+ssh-copy-id root@node1 ip address
+cd .ssh/
+.ssh# ls
+
+====================================
+
+ssh -keygen
+/etc/hosts/ansible
+
+copy and paste the ip of host1
+vim /etc/host/
+
+
+ping node01
+
+
+ansible command
+
+ansible -m ping all^C
+
+cd /etc/ansible/ - all files 
+
+anisble host file is edited 
+/etc/ansible# ansible all -m ping
+
+ansible node01 -m ping
+
+anisble ubuntu -m ping
+
+anisble ubuntu -m command -a "date"(date)
+(command like see the server date and time)
+
+ansible ubuntu -m command -a "uptime"
+
+ansible ubuntu -m command -m command -a "apt-get -y update"
+
+ansible simple commands 
+
+root machinei has to be given: ansible ubuntu -m user -a "name=pradeep password=sankar"
+
+anisble -doc apt - apt module 
+
+
+apt module install:
+htop to install
+
+rootmachine : ansible  ubuntu -m apt "name=htop state=present"
+
+slave machine : htop
+
+ansible gather_facts where centos and ubuntu are used...
+
+adhoc commands:
+
+ansible-vault
+ansible galaxy
+    
+
+playbook :
+
+name:  copy a file
+copy:  src=/tmp/somefile.tct dest=/tmp/somefile.txt
+
+create a somefile
+
+
+example for some playbook 
+
+install a tomcat server
+sample war file and deploy it.
+
+---
+hosts:  ubuntu
+become_user:  root
+tasks:
+-  name:  install tomcat
+   apt:  name=tomcat state=latest
+-  name: start tomcat service
+  service:  name=tomcat state=started
+- name:  Deploy sample war file
+  copy:  src=sample.war desc=/usr/share/tomcat/webapps
+-  notify:  restart tomcat
+
+-  handlers:
+  name:  restart tomcat service
+  service:  name=tomcat state=restarted
+
+
+ansible handlers (
+---
+netstat
+
+
+---
+-  hosts:  centos
+  become_user:  root
+vars:  
+src_path:  /root/playbooks
+dest_path:  /vars/www/html
+tasks:
+-  name:  install htpd
+  yum:  name=httpd state=present
+-  name:  start httpd
+  service:  name=httpd state=present
+  name: start httpd
+  service:  name=httpd state=started
+-  name:  copy my website
+  copy:  src={{src_path}}/index.html dest={{dest_path}
+notify restart httpd
+
+-  handlers:
+  name:  restart httpd
+  service:  name=httpd state=restarted
+
+index.html has to be created in order to run the above program
+
+apt repo module 
+(refer google source in ansible 2.7)
+ex:
+  hosts:  centos
+  become_user:  root
+tasks:
+-  name:  add repo for java8
+  apt_repository:  repo="ppa:webupdeteam/java" state=present
+-  nameL  accept license
+  debconf:  name="orcale-java8-installer" question="shared/accepted-oracle-license-v1-1"  value="true" vtype="select"
+
+-  name: install java
+  apt: 
+-  name:  oracle-java-installer
+  state:  latest
+  update-cache:  yes
+  force:  yes
+
+download wordpress:
+
+open wordpress in php
+use database: 
+unzip the wordpress and connect to server
+install mysql
+install nginx
+
+ex:
+
+npsoni.com login 
+create subdomains
+upload the wordpress to npsoni 
+
+canspace: 
+create subdomain MYSQL in canspace
+
+tcs/roles/mysql,php,nginx(webpage running) and cinnib (spinning the evn)
+
+
+httpd
+install
+start
+restart
+	
+
+write playbook for HTTPD which is main.yml
+
+---
+-  name:  install httpd
+  yum:  name-httpd state=present
+
+-  name: start httpd
+  service:  name=httpd state-started
+
+service: copy the file 
+notfiy (copy the src index path)
+
+create the main.yml under handler
+
+========================================
+
+playbook for wordpress:
+---
+-  name:  Install mysql package
+  yum:  name={{ item }} state=present
+  with_items:(this is used to declare of items )
+  - mysql-server
+  -mysql-python
+  -libselinux-python
+  -libsemanage-python
+
+- name:  configure selinux to start mysql
+  seboolean:name=mysql_connect_any state=true presistent=
+  when:  ansible_selinux.status == "enabled"
+
+-  name: create mysql configuration file
+  template:  src=my.cof.j2 dest=/etc/my.cnf 
+notify:                           (handlers book)
+  -  restart mysql
+
+-  name:  start mysql at book
+  service:  name=mysql state=started enabled=yes
+
+
+
+handlers playbook
+
+---
+-  name:  restart mysql
+  service:  nname=mysql state=restarted
+
+
+(execute the syntax check and lint(program check)) yet to check SCP and ansible-playbook site.yml --check (will not deploy changes in the server, it just checks the codr)
+
+gather_facts :
+
+ubuntu and centos are different 
+
+setup is the keyword for that 
+
+default config file in ansible
+
+
+Docker file:
+
+1.wget war file ---> download the file
+2.copy the war and part of the dockerfile
+3.bulid the image of dockerfile
+4.push the image to dockerhub
+5.run the container
+
+
+bash command: 
+
+
+GCG ( need to look up)
+
+nohup and end with & - which are supposed to do run in background 
+
+nohup.oup ---> implement the output
+
+
+during deploy in jenkins 
+
+from tomcat
+ADD addressbook.war /usr/local/tomcat/webapps
+CMD "catalion.sh"
+EOF
+
+docker bulid . -t dockerhub login/dockeraddressbook:$bulid_number
+docker push dockerhub
+docker run -itd --name:adreessbook-"bulid_number" -p 8080:8080 @dockerhub name:(full name)
+
+
+run the container and once the bulid is success. then it is terminated 
+
+
+
+docker network:
+
+docker network ls
+bridge and host and none are found
+
+docker network inspect bridge
+
+bridge is default...
+
+docker compose: 
+
+set up multiple files to run 
+
+write a docker file : YML.file
+
+addressbook:(orbitary)
+img:  dockerhub creation:1
+port:
+  - 80:80
+links: 
+-  addressbook_db:mqsql
+adddressbook_bb:(orbitory)
+image:  mariadb
+evironment:
+
+MYSQL  ROOT_PASSWORD:  name
+======================================
+wordpress:
+image: wordpress
+port: 
+  -  80:80
+
+links:
+-  wordpress_db:Mysql
+
+mysql_bb:
+image:  mariabd
+evironment:
+
+MYSQL_ROOT_PASSWORD : tcs
+
+phpadmin:
+image: copy for source
+links:
+     wordpress_db:Mysql
+ports:
+-  8082:80
+evironment:
+MYSQL_ROOT_PASSWORD : tcs
+
+======
+chmod + makes the file executable
+
+
+
+ab-tomcat:
+iamge:
+
+=====================================
+docker swarn:
+
+=============================
+kubernates:
+
+kube ctl are the keyword
+
+steps:
+
+1.clear the server: stay as root user : sudo su -
+2.apt-get update
+3.https://kubernetes.io/docs/tasks/tools/install-kubectl/  ( install kubernates)
+4.gcloud init
+5.click "2"
+6. enter the click on browser and login with google account 
+7. copy the code as verification 
+8. click "1"
+9.click "N"
+10.  gcloud container clusters create pradeep --zone=us-central1 -a
+ 35.232.38.145 - master id
+11.kubectl get nodes
+12.kubectl describe nodes
+13.kubectl get pods
+14. create a yml file 
+
+apiVersion:  v1
+kind:  pod
+metadata:
+ - name: sample-pod
+ - labels:
+ - zone:  dev
+ - version:  v1
+
+spec:
+ compelete the program
+
+kubectl get pods
+
+kubectl describe pods sample.pod
+
+deploy.yml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name
+: nginx-deploy-sample
+spec:
+ replicas: 10
+ template:
+  metadata:
+   labels:
+    app: sample-nginx-app
+  spec:
+   containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+
+
+kubectl create -f deploy.yml 
+
+kubectl get deploy
+
+kubectl get rs
+kubectl describe rs
+
+
+service.yml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-service
+  labels:
+   type: sample-service-label
+spec:
+ type: NodePort
+ ports:
+ - port: 80
+   nodePort: 32222
+   protocol: TCP
+ selector:
+   app: sample-nginx-app
+
+8th feb:
+ 
+gcloud compute instance list
+
+kubectl run my-pod(name) --image=tomcat --port 8080
+
+kubectl get pods (get the entire list of pods)
+
+kubectl delete pods sample-pod
+
+kubectl  describe pods my-pod 
+kubectl  scale deployment my-pod --replicas=10
+
+ kubectl get pods -o wide (for specific pod container )
+
+create a load balancer:
+
+kubectl expose deployment my-pod --type:LoadBalancer --port 80 -target-port 8080 
+
+
+(the specific error)
+kubectl get pods
+kubectl delete svc
+kubectl delete svc mu-pod
+kubectl delete deployment my-pod
+kubectl get pods
+
+create a replicas from above project:
+
+kubectl apply -f deploy.yml        --record
+kubectl rollout status deployment jenkins-deploy-sample 
+kubectl rollout history deployment jenkins-deploy-sample : rollout history are show with revision status
+kubectl rollout undo deployment jenkins-deploy-sample --to-revision=2
+
+blue - cureent deploy
+green - desired one
+
+diff between docker swarm and kubernates ----> 
+
+===============================================================================================
+git pull origin master
+git branch (present branch)
+
+ Kdif3 - conflicting tool for ubuntu
+install kdif3
+git config --global merge.tool kdiff3
+git mergetool
+
+
+jenkins :
+
+
+maven pmd -pmd:mvn pmd pom file verification
+coberkira --- QA matrix
+
+package : maven package
+
+
+global tool configuraton in jenkins 
+
+name: ,yjava
+
+Project :
+
+Requirements:
+1.Ubuntu Opearting system
+2.Apache2/nginx insta;;ed serving the index.html with the content 
+
+
+https://github.com.npsoni88/dockerhub-task
+
+montioring nagios:
+
+
+
+
+
+nishant@npsoni.com
+nishant.soni88@gmail.com
